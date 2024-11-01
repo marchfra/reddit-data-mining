@@ -47,7 +47,7 @@ def extract_subreddits(
     user_subreddits = author_data["subreddit"].to_numpy()
 
     # idxs is an array with the indexes of the subreddits in subreddits_idx
-    idxs = subreddit_idx.loc[user_subreddits].values
+    idxs = subreddit_idx.loc[user_subreddits].to_numpy()
 
     # create a sparse array indicating the subreddits the author has posted in
     v = sparse.dok_array((1, len(subreddit_idx)))  # dok = dictionary of keys
@@ -60,7 +60,7 @@ def extract_text(author_data: pd.DataFrame) -> str:
     """
     Concatenates all the posts of an author into a single string.
     """
-    group_text = author_data["body"].astype(str).values
+    group_text = author_data["body"].astype(str).to_numpy()
     return " ".join(group_text)
 
 
@@ -68,6 +68,9 @@ def extract_features(
     train_data: pd.DataFrame,
     target: pd.DataFrame,
 ) -> tuple[sparse.csr_matrix, list[str], pd.Series]:
+    """
+    Extract features from the training data.
+    """
     # Feature extraction
     subreddit_idx = create_subreddit_idx(train_data)
 
